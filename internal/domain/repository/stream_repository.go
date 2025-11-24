@@ -10,6 +10,6 @@ import (
 // 実装は、internal/infrastuctureで行います。
 type StreamRepository interface {
 	FindByKey(ctx context.Context, key string) (*entity.Stream, error)
-	Save(ctx context.Context, stram *entity.Stream)
+	Save(ctx context.Context, stram *entity.Stream) error
 	UpdateStatus(ctx context.Context, id string, stream entity.StreamStatus) error
 }
