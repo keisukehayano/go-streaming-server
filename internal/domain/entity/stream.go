@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// 配信お状態を表す型
+// 配信の状態を表す型
 type StreamStatus string
 
 const (
@@ -21,11 +21,11 @@ type Stream struct {
 	ID          string
 	StreamKey   string
 	Status      StreamStatus
-	StraemAt    *time.Time
+	StartedAt   *time.Time
 	ViewerCount int
 }
 
-// NewStram は初期状態のストリームを生成します。
+// NewStream は初期状態のストリームを生成します。
 func NewStream(id, key string) *Stream {
 	return &Stream{
 		ID:        id,
@@ -41,7 +41,7 @@ func (s *Stream) GoLive() error {
 		return ErrStreamAlreadyLive
 	}
 	now := time.Now()
-	s.StraemAt = &now
+	s.StartedAt = &now
 	s.Status = StatusLive
 	return nil
 }
@@ -49,5 +49,5 @@ func (s *Stream) GoLive() error {
 // Stop は配信終了です(猶予期間のロジックなどは別途検討可能)
 func (s *Stream) Stop() {
 	s.Status = StatusIdle
-	s.StraemAt = nil
+	s.StartedAt = nil
 }

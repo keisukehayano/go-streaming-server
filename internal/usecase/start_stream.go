@@ -8,7 +8,7 @@ import (
 )
 
 // ユーザーからの入力データ(DTD)
-type StartStrreamInput struct {
+type StartStreamInput struct {
 	StreamKey string
 }
 
@@ -25,13 +25,13 @@ func NewStartStreamUseCase(repo repository.StreamRepository) *StartStreamUseCase
 	}
 }
 
-func (u *StartStreamUseCase) Run(ctx context.Context, input StartStrreamInput) error {
+func (u *StartStreamUseCase) Run(ctx context.Context, input StartStreamInput) error {
 	// 1. ドメインオブジェクトの取得(リポジトリ経由)
 	stream, err := u.repo.FindByKey(ctx, input.StreamKey)
 	if err != nil {
 		// 本来はここで"NotFound"なら新規作成するなどの分岐が入りますが、
 		// 今回は簡単のため、見つからなければエラーとします。
-		return fmt.Errorf("failed to find stram: %w", err)
+		return fmt.Errorf("failed to find stream: %w", err)
 	}
 
 	// 2. ドメインロジックの実行(ビジネスルールの適用)
