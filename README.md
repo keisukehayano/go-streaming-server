@@ -67,3 +67,41 @@ Bash
 
 ffmpeg -f avfoundation -list_devices true -i ""
 これで、サーバー（Ubuntu）を中心に、あらゆるOSから映像を送り込めるシステムが完成しました！
+
+
+ver 2
+
+各OSごとのビルドと配布方法
+以下のコマンドでビルドし、実行ファイル と FFmpegバイナリ を同じフォルダに入れて配布してください。
+
+🪟 Windows向け
+ビルド:
+
+PowerShell
+
+set GOOS=windows
+set GOARCH=amd64
+go build -o stream_client.exe cmd/client/main.go
+配布物: stream_client.exe + ffmpeg.exe
+
+実行: コマンドプロンプト等で stream_client.exe -server 192.168.x.x
+
+🍎 macOS向け (Apple Silicon)
+ビルド:
+
+Bash
+
+GOOS=darwin GOARCH=arm64 go build -o stream_client_mac cmd/client/main.go
+配布物: stream_client_mac + ffmpeg (拡張子なし)
+
+実行: ターミナルで ./stream_client_mac -server 192.168.x.x (初回は「開発元未確認」の許可が必要になる場合があります)
+
+🐧 Linux向け
+ビルド:
+
+Bash
+
+GOOS=linux GOARCH=amd64 go build -o stream_client_linux cmd/client/main.go
+配布物: stream_client_linux + ffmpeg
+
+実行: ./stream_client_linux -server 192.168.x.x

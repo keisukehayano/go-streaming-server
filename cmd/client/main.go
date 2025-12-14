@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"path/filepath"
 	"runtime"
 	"syscall"
 )
@@ -117,7 +118,33 @@ func main() {
 			log.Println("✅ Streaming finished successfully.")
 		}
 	}
+}
 
+// resolveFFmpegPath : 実行ファイルと同じフォルダにあるffmpegを探す
+func resolveFFmpegPath() string {
+	exePath, err := os.Executable()
+	if err != nil {
+		// 取得できない場合はシステムのパスに頼る
+		if runtime.GOOS == "windows" {
+			return "ffmpeg.exe"
+		}
+		return "ffmpeg"
+	}
+	exeDir := filepath.Dir(exePath)
+
+	// OSごとのバイナリ名
+	fileName := "ffmpeg"
+	if runtime.GOOS == "windows" {
+		fileName = "ffmpeg.exe"
+	}
+
+	// 1. 隣にあるかチェック
+	localPath := filepath.Join(exeDir, fileName)
+	if _, err := os.Stat(localPath); err == nil {
+		return localPath
+	}
+
+	return fileName
 }
 
 func printOutput(r io.Reader) {
